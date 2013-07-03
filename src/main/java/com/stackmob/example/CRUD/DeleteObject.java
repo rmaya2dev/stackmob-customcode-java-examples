@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.stackmob.example.CRUD;
+package com.stackmob.example.crud;
 
 import com.stackmob.core.DatastoreException;
 import com.stackmob.core.InvalidSchemaException;
