@@ -16,7 +16,7 @@
 
 package com.stackmob.example;
 
-import com.stackmob.example.crud.*;
+import com.stackmob.example.CRUD.*;
 import com.stackmob.example.geopoints.*;
 import com.stackmob.example.relations.*;
 import com.stackmob.example.push.*;
@@ -47,6 +47,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new UpdateObject());
     list.add(new DeleteObject());
     list.add(new ReadAllObjects());
+    list.add(new OrQuery());
     /* Equality Queries */
     list.add(new QueryByField());
     list.add(new QueryByEquality());
