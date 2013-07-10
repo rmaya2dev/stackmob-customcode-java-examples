@@ -46,8 +46,8 @@ public class TwilioSMS implements CustomCodeMethod {
 
   //Create your Twilio Acct at twilio.com and enter 
   //Your accountsid and accesstoken below.
-  public static final String accountsid = "YOUR_ACCOUNTSID";
-  public static final String accesstoken = "YOUR_ACCESSTOKEN";
+  public static final String accountsid = "AC4c5992cd16e20dc406f79f9225cdd39a";
+  public static final String accesstoken = "0b16284f74d0551eb9d11096f9842a86";
     
   @Override
   public String getMethodName() {
@@ -70,7 +70,7 @@ public class TwilioSMS implements CustomCodeMethod {
     String toPhoneNumber = request.getParams().get("tophonenumber");
       
     //  FROM phonenumber should be one create in the twilio dashboard at twilio.com
-    String fromPhoneNumber = "9259488599";
+    String fromPhoneNumber = "18572541790";
       
     //  text message you want to send
     String message = request.getParams().get("message");
