@@ -42,26 +42,15 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.TwilioRestResponse;
 import com.twilio.sdk.resource.factory.CallFactory;
 import com.twilio.sdk.resource.factory.SmsFactory;
 import com.twilio.sdk.resource.instance.Account;
-import com.twilio.sdk.resource.instance.AvailablePhoneNumber;
-import com.twilio.sdk.resource.instance.Call;
-import com.twilio.sdk.resource.instance.Conference;
-import com.twilio.sdk.resource.instance.Participant;
-import com.twilio.sdk.resource.list.AccountList;
-import com.twilio.sdk.resource.list.AvailablePhoneNumberList;
-import com.twilio.sdk.resource.list.ParticipantList;
 
-public class TwilioSMS implements CustomCodeMethod {
+
+public class TwilioToken implements CustomCodeMethod {
 
   //Create your Twilio Acct at twilio.com and enter 
   //Your accountsid and accesstoken below.
