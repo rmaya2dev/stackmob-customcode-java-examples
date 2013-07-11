@@ -68,7 +68,7 @@ public class TwilioToken implements CustomCodeMethod {
   }  
 
   @Override
-  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
+  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) throws TwilioRestException{
     int responseCode = 0;
     String responseBody = "";
 
