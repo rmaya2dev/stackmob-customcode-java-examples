@@ -48,7 +48,14 @@
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.twilio.sdk</groupId>
+      <artifactId>twilio-java-sdk</artifactId>
+      <version>3.3.15</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
+  
     
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -75,7 +82,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.stackmob.example.EntryPointExtender</mainClass>
+                  <mainClass>com.stackmob.customcode.EntryPointExtender</mainClass>
                 </transformer>
               </transformers>
               <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -84,8 +91,20 @@
         </executions>
       </plugin>
       <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-jar-plugin</artifactId>
+	      <version>2.3.2</version>
+	      <configuration>
+	        <archive>
+	          <manifest>
+	            <mainClass>com.stackmob.customcode.EntryPointExtender</mainClass>
+	          </manifest>
+	        </archive>
+	      </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4.1</version>
         <executions>
           <execution>
             <phase>package</phase>
