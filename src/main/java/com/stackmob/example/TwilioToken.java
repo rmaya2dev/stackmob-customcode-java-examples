@@ -68,11 +68,11 @@ public class TwilioToken implements CustomCodeMethod {
   }  
 
   @Override
-  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) throws TwilioRestException{
+  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider){
     int responseCode = 0;
     String responseBody = "";
 
-    LoggerService logger = serviceProvider.getLoggerService(TwilioSMS.class);
+    LoggerService logger = serviceProvider.getLoggerService(TwilioToken.class);
       
     // TO phonenumber should be YOUR cel phone
     String toPhoneNumber = request.getParams().get("tophonenumber");
@@ -93,6 +93,10 @@ public class TwilioToken implements CustomCodeMethod {
 
     StringBuilder body = new StringBuilder();
     
+	Map<String, Object> map = new HashMap<String, Object>();
+    
+    try{
+    
     TwilioRestClient client = new TwilioRestClient(accountsid, accesstoken);
     Account mainAccount = client.getAccount();
     
@@ -108,9 +112,20 @@ public class TwilioToken implements CustomCodeMethod {
 	TwilioRestResponse resp = client.request("/2010-04-01/Accounts", "GET",
 			null);
 	
-	Map<String, Object> map = new HashMap<String, Object>();
+	responseCode = resp.getHttpStatus();
+
     map.put("response_body", resp.getResponseText());
+    
+    }catch(TwilioRestException e)
+    {
+        logger.error(e.getMessage(), e);
+        responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
+        responseBody = e.getMessage();
+        map.put("response_body", responseBody);
+    }
+	
+
      
-    return new ResponseToProcess(resp.getHttpStatus(), map);
+    return new ResponseToProcess(responseCode, map);
   }
 }
