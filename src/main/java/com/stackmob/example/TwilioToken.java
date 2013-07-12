@@ -115,9 +115,6 @@ public class TwilioToken implements CustomCodeMethod {
 												// number in your account
 	smsParams.put("Body", message);
 	smsFactory.create(smsParams);
-
-	TwilioRestResponse resp = client.request("/2010-04-01/Accounts", "GET",
-			null);
 	
 	// Make a call
 	CallFactory callFactory = mainAccount.getCallFactory();
@@ -128,6 +125,9 @@ public class TwilioToken implements CustomCodeMethod {
 	callParams.put("Url", "http://demo.twilio.com/welcome/voice/");
 	Call call = callFactory.create(callParams);
 	System.out.println(call.getSid());
+	
+	TwilioRestResponse resp = client.request("/2010-04-01/Accounts", "GET",
+			null);
 	
 	responseCode = resp.getHttpStatus();
 
