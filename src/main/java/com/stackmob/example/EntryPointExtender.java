@@ -38,7 +38,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new Logging());
     list.add(new HttpRequest());
     list.add(new TwilioSMS());
-    list.add(new TwilioToken());
+    //list.add(new TwilioToken());
     list.add(new SendGrid());
     list.add(new Stripe());
     list.add(new Increment());

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 
 package com.stackmob.example;
 
@@ -42,6 +42,21 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.TwilioRestException;
+import com.twilio.sdk.TwilioRestResponse;
+import com.twilio.sdk.resource.factory.CallFactory;
+import com.twilio.sdk.resource.factory.SmsFactory;
+import com.twilio.sdk.resource.instance.Account;
+import com.twilio.sdk.resource.instance.AvailablePhoneNumber;
+import com.twilio.sdk.resource.instance.Call;
+import com.twilio.sdk.resource.instance.Conference;
+import com.twilio.sdk.resource.instance.Participant;
+import com.twilio.sdk.resource.list.AccountList;
+import com.twilio.sdk.resource.list.AvailablePhoneNumberList;
+import com.twilio.sdk.resource.list.ParticipantList;
+
+
 public class TwilioSMS implements CustomCodeMethod {
 
   //Create your Twilio Acct at twilio.com and enter 
@@ -51,7 +66,7 @@ public class TwilioSMS implements CustomCodeMethod {
     
   @Override
   public String getMethodName() { 
-    return "twilio_sms2";
+    return "twilio_sms"; 
   }
 
   @Override
@@ -60,11 +75,11 @@ public class TwilioSMS implements CustomCodeMethod {
   }  
 
   @Override
-  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
+  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider){
     int responseCode = 0;
     String responseBody = "";
 
-    LoggerService logger = serviceProvider.getLoggerService(TwilioSMS.class);
+    LoggerService logger = serviceProvider.getLoggerService(TwilioToken.class);
       
     // TO phonenumber should be YOUR cel phone
     String toPhoneNumber = request.getParams().get("tophonenumber");
@@ -84,66 +99,49 @@ public class TwilioSMS implements CustomCodeMethod {
     }
 
     StringBuilder body = new StringBuilder();
-
-    body.append("To=");
-    body.append(toPhoneNumber);
-    body.append("&From=");
-    body.append(fromPhoneNumber);
-    body.append("&Body=");
-    body.append(message);
-
-    String url = "https://api.twilio.com/2010-04-01/Accounts/" + accountsid + "/SMS/Messages.json";
     
-    String pair = accountsid + ":" + accesstoken;
-      
-    // Base 64 Encode the accountsid/accesstoken
-    String encodedString = new String("utf-8");
-    try {
-      byte[] b =Base64.encodeBase64(pair.getBytes("utf-8"));
-      encodedString = new String(b);
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-      HashMap<String, String> errParams = new HashMap<String, String>();
-      errParams.put("error", "the auth header threw an exception: " + e.getMessage());
-      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-    }
+	Map<String, Object> map = new HashMap<String, Object>();
     
-    Header accept = new Header("Accept-Charset", "utf-8");
-    Header auth = new Header("Authorization","Basic " + encodedString);
-    Header content = new Header("Content-Type", "application/x-www-form-urlencoded");
+    try{
+    
+    TwilioRestClient client = new TwilioRestClient(accountsid, accesstoken);
+    Account mainAccount = client.getAccount();
+    
+//	// Send an sms
+//	SmsFactory smsFactory = mainAccount.getSmsFactory();
+//	Map<String, String> smsParams = new HashMap<String, String>();
+//	smsParams.put("To", toPhoneNumber); // Replace with a valid phone number
+//	smsParams.put("From", fromPhoneNumber); // Replace with a valid phone
+//												// number in your account
+//	smsParams.put("Body", message);
+//	smsFactory.create(smsParams);
+	
+	// Make a call
+	CallFactory callFactory = mainAccount.getCallFactory();
+	Map<String, String> callParams = new HashMap<String, String>();
+	callParams.put("To", toPhoneNumber); // Replace with a valid phone number
+	callParams.put("From", fromPhoneNumber); // Replace with a valid phone
+												// number in your account
+	callParams.put("Url", "http://demo.twilio.com/welcome/voice/");
+	Call call = callFactory.create(callParams);
+	System.out.println(call.getSid());
+	
+	TwilioRestResponse resp = client.request("/2010-04-01/Accounts", "GET",
+			null);
+	
+	responseCode = resp.getHttpStatus();
 
-    Set<Header> set = new HashSet();
-    set.add(accept);
-    set.add(content);
-    set.add(auth);
-      
-    try {
-      HttpService http = serviceProvider.getHttpService();
-      PostRequest req = new PostRequest(url,set,body.toString());
-             
-      HttpResponse resp = http.post(req);
-      responseCode = resp.getCode();
-      responseBody = resp.getBody();
-    } catch(TimeoutException e) {
-      logger.error(e.getMessage(), e);
-      responseCode = HttpURLConnection.HTTP_BAD_GATEWAY;
-      responseBody = e.getMessage();
-    } catch(AccessDeniedException e) {
-      logger.error(e.getMessage(), e);
-      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
-      responseBody = e.getMessage();
-    } catch(MalformedURLException e) {
-      logger.error(e.getMessage(), e);
-      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
-      responseBody = e.getMessage();
-    } catch(ServiceNotActivatedException e) {
-      logger.error(e.getMessage(), e);
-      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
-      responseBody = e.getMessage();
+    map.put("response_body", resp.getResponseText());
+    
+    }catch(TwilioRestException e)
+    {
+        logger.error(e.getMessage(), e);
+        responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
+        responseBody = e.getMessage();
+        map.put("response_body", responseBody);
     }
-      
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("response_body", responseBody);
+	
+
      
     return new ResponseToProcess(responseCode, map);
   }
