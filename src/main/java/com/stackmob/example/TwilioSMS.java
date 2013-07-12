@@ -79,7 +79,7 @@ public class TwilioSMS implements CustomCodeMethod {
     int responseCode = 0;
     String responseBody = "";
 
-    LoggerService logger = serviceProvider.getLoggerService(TwilioToken.class);
+    LoggerService logger = serviceProvider.getLoggerService(TwilioSMS.class);
       
     // TO phonenumber should be YOUR cel phone
     String toPhoneNumber = request.getParams().get("tophonenumber");
