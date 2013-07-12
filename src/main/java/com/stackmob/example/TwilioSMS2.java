@@ -42,7 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 
-public class TwilioSMS implements CustomCodeMethod {
+public class TwilioSMS2 implements CustomCodeMethod {
 
   //Create your Twilio Acct at twilio.com and enter 
   //Your accountsid and accesstoken below.
