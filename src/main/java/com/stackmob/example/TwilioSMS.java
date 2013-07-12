@@ -51,7 +51,7 @@ public class TwilioSMS implements CustomCodeMethod {
     
   @Override
   public String getMethodName() { 
-    return "twilio_sms";
+    return "twilio_sms2";
   }
 
   @Override

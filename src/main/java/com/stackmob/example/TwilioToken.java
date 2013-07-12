@@ -59,7 +59,7 @@ public class TwilioToken implements CustomCodeMethod {
     
   @Override
   public String getMethodName() { 
-    return "twilio_token"; 
+    return "twilio_sms"; 
   }
 
   @Override
