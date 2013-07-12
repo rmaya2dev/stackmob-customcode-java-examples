@@ -48,6 +48,13 @@ import com.twilio.sdk.TwilioRestResponse;
 import com.twilio.sdk.resource.factory.CallFactory;
 import com.twilio.sdk.resource.factory.SmsFactory;
 import com.twilio.sdk.resource.instance.Account;
+import com.twilio.sdk.resource.instance.AvailablePhoneNumber;
+import com.twilio.sdk.resource.instance.Call;
+import com.twilio.sdk.resource.instance.Conference;
+import com.twilio.sdk.resource.instance.Participant;
+import com.twilio.sdk.resource.list.AccountList;
+import com.twilio.sdk.resource.list.AvailablePhoneNumberList;
+import com.twilio.sdk.resource.list.ParticipantList;
 
 
 public class TwilioToken implements CustomCodeMethod {
@@ -111,6 +118,16 @@ public class TwilioToken implements CustomCodeMethod {
 
 	TwilioRestResponse resp = client.request("/2010-04-01/Accounts", "GET",
 			null);
+	
+	// Make a call
+	CallFactory callFactory = mainAccount.getCallFactory();
+	Map<String, String> callParams = new HashMap<String, String>();
+	callParams.put("To", toPhoneNumber); // Replace with a valid phone number
+	callParams.put("From", fromPhoneNumber); // Replace with a valid phone
+												// number in your account
+	callParams.put("Url", "http://demo.twilio.com/welcome/voice/");
+	Call call = callFactory.create(callParams);
+	System.out.println(call.getSid());
 	
 	responseCode = resp.getHttpStatus();
 
