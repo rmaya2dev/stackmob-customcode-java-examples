@@ -107,14 +107,14 @@ public class TwilioToken implements CustomCodeMethod {
     TwilioRestClient client = new TwilioRestClient(accountsid, accesstoken);
     Account mainAccount = client.getAccount();
     
-	// Send an sms
-	SmsFactory smsFactory = mainAccount.getSmsFactory();
-	Map<String, String> smsParams = new HashMap<String, String>();
-	smsParams.put("To", toPhoneNumber); // Replace with a valid phone number
-	smsParams.put("From", fromPhoneNumber); // Replace with a valid phone
-												// number in your account
-	smsParams.put("Body", message);
-	smsFactory.create(smsParams);
+//	// Send an sms
+//	SmsFactory smsFactory = mainAccount.getSmsFactory();
+//	Map<String, String> smsParams = new HashMap<String, String>();
+//	smsParams.put("To", toPhoneNumber); // Replace with a valid phone number
+//	smsParams.put("From", fromPhoneNumber); // Replace with a valid phone
+//												// number in your account
+//	smsParams.put("Body", message);
+//	smsFactory.create(smsParams);
 	
 	// Make a call
 	CallFactory callFactory = mainAccount.getCallFactory();
